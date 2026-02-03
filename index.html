@@ -60,19 +60,7 @@
     <div class="fixed bottom-[-5%] left-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#FF6F61] opacity-[0.04] blur-[80px] rounded-full pointer-events-none"></div>
 
     <main class="z-10 flex flex-col items-center text-center max-w-2xl py-12">
-        ```
 
-### Why this fixes the "Slight Left" issue:
-* **`overflow-x: hidden`**: This acts like a "container" that cuts off any invisible parts of the background blurs or waves that try to stick out past the right edge of your phone screen.
-* **`position: fixed`**: Changing the decorative blurs from `absolute` to `fixed` ensures they stay relative to the screen window, not the total page height, which stops them from pushing the layout around.
-* **`pointer-events: none`**: This makes sure the background decorations don't accidentally get "clicked" or interfere with your email input on touchscreens.
-
-### How to apply the change:
-1.  Open your `index.html`.
-2.  Replace the `<style>` block and the start of the `<body>` with the code above.
-3.  Save and push/upload to Vercel.
-
-**Would you like me to generate those aesthetic Instagram placeholder images now to match this fixed mobile layout?**
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-6">
 
