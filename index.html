@@ -9,36 +9,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        html, body {
-            width: 100%;
-            overflow-x: hidden; /* prevent horizontal scrolling while allowing vertical scroll */
-        }
-        body {
-            font-family: 'Satoshi', sans-serif;
-            background-color: #FFFBF5; /* Warm Shell */
-            color: #2D2926; /* Deep Driftwood */
-        }
-        h1 { font-family: 'Outfit', sans-serif; }
-        
-        /* Subtle Beach Wave Animation */
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120%;
-            height: 15vh;
-            background: url('https://curtislarson.github.io/paper.css/static/wave.svg');
-            background-size: 1000px 100px;
-            opacity: 0.05;
-            animation: move_wave 20s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes move_wave {
-            0% { background-position-x: 0; }
-            100% { background-position-x: 1000px; }
-        }
-    </style>
+    /* Prevent any horizontal shifting on mobile */
+    html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; 
+        position: relative;
+    }
+    
+    body {
+        font-family: 'Satoshi', sans-serif;
+        background-color: #FFFBF5; 
+        color: #2D2926;
+    }
+    
+    h1 { font-family: 'Outfit', sans-serif; }
+    
+    /* Fixed Wave: Stays at the bottom without pushing the page left/right */
+    .wave {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 12vh;
+        background: url('https://curtislarson.github.io/paper.css/static/wave.svg');
+        background-size: 1000px 100px;
+        opacity: 0.05;
+        animation: move_wave 20s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    @keyframes move_wave {
+        0% { background-position-x: 0; }
+        100% { background-position-x: 1000px; }
+    }
+
+    /* Prevent text from hitting the screen edges on tiny phones */
+    main {
+        width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+</style>
+
+<body class="flex flex-col items-center justify-center min-h-screen">
+    <div class="wave"></div>
+    <div class="fixed top-[-5%] right-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#26CCC2] opacity-[0.04] blur-[80px] rounded-full pointer-events-none"></div>
+    <div class="fixed bottom-[-5%] left-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#FF6F61] opacity-[0.04] blur-[80px] rounded-full pointer-events-none"></div>
+
+    <main class="z-10 flex flex-col items-center text-center max-w-2xl py-12">
+        ```
+
+### Why this fixes the "Slight Left" issue:
+* **`overflow-x: hidden`**: This acts like a "container" that cuts off any invisible parts of the background blurs or waves that try to stick out past the right edge of your phone screen.
+* **`position: fixed`**: Changing the decorative blurs from `absolute` to `fixed` ensures they stay relative to the screen window, not the total page height, which stops them from pushing the layout around.
+* **`pointer-events: none`**: This makes sure the background decorations don't accidentally get "clicked" or interfere with your email input on touchscreens.
+
+### How to apply the change:
+1.  Open your `index.html`.
+2.  Replace the `<style>` block and the start of the `<body>` with the code above.
+3.  Save and push/upload to Vercel.
+
+**Would you like me to generate those aesthetic Instagram placeholder images now to match this fixed mobile layout?**
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-6">
 
