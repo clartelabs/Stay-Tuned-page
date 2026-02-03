@@ -5,27 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coming Soon | ClartèLABS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. Universal Layout Guard */
         html, body {
             width: 100%;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            position: relative;
+            background-color: #FFFBF5; 
         }
-        
         body {
             font-family: 'Satoshi', sans-serif;
-            background-color: #FFFBF5; 
             color: #2D2926;
         }
-        
         h1 { font-family: 'Outfit', sans-serif; }
-        
-        /* 2. Responsive Wave Animation */
         .wave {
             position: fixed;
             bottom: 0;
@@ -39,15 +33,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
-        /* 3. Background Blurs */
-        .blur-circle {
-            position: fixed;
-            z-index: -1;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
         @keyframes move_wave {
             0% { background-position-x: 0; }
             100% { background-position-x: 1000px; }
@@ -57,15 +42,13 @@
 
 <body class="flex flex-col items-center justify-center min-h-screen">
     <div class="wave"></div>
-    <div class="blur-circle top-[-5%] right-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#26CCC2] opacity-[0.05] blur-[80px]"></div>
-    <div class="blur-circle bottom-[-5%] left-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#FF6F61] opacity-[0.05] blur-[80px]"></div>
 
-    <main id="main-content" class="z-10 flex flex-col items-center text-center w-full max-w-2xl px-6 py-10 opacity-0 transform translate-y-5 transition-all duration-1000">
+    <main class="relative z-10 flex flex-col items-center text-center w-full max-w-2xl px-6 py-10">
         
         <div class="mb-8 md:mb-12">
             <img src="Black and White Minimalist Elegant Modern Typography  Creative Studio Brand Logo (1).png" 
                  alt="Clartèlabs" 
-                 class="w-32 md:w-52 lg:w-64 h-auto grayscale contrast-125 hover:scale-105 transition-transform duration-500">
+                 class="w-32 md:w-52 lg:w-64 h-auto grayscale contrast-125">
         </div>
 
         <h1 class="text-3xl md:text-6xl font-semibold tracking-tight mb-4 leading-tight">
@@ -83,12 +66,12 @@
                 type="email" 
                 required 
                 placeholder="Enter your email" 
-                class="flex-grow bg-transparent px-5 py-3 outline-none text-zinc-700 text-base min-w-0"
+                class="flex-grow bg-transparent px-5 py-3 outline-none text-zinc-700 text-base"
             />
             <button 
                 onclick="submitToWaitlist()"
                 id="submit-btn"
-                class="bg-[#26CCC2] hover:bg-[#1eb3aa] text-white px-8 py-3 rounded-[22px] font-semibold transition-all active:scale-95 whitespace-nowrap"
+                class="bg-[#26CCC2] hover:bg-[#1eb3aa] text-white px-8 py-3 rounded-[22px] font-semibold transition-all active:scale-95"
             >
                 Notify Me
             </button>
@@ -106,13 +89,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 1. Database Credentials
         const SUPABASE_URL = 'https://nwpexmcezsducjfylypk.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cGV4bWNlenNkdWNqZnlseXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODU2OTIsImV4cCI6MjA4NTY2MTY5Mn0.hZfkSgSN0-jO2RyD7nuAvK36chMASnKfC4asiFy0QTw'; 
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. Form Submission Logic
         async function submitToWaitlist() {
             const emailInput = document.getElementById('email-input');
             const btn = document.getElementById('submit-btn');
@@ -134,19 +115,20 @@
 
                 if (error) {
                     msg.innerText = error.code === '23505' ? "You're already on the list! 🌊" : "Oops, try again.";
-                    msg.className = "mt-4 text-sm text-red-500 block";
+                    msg.className = "mt-4 text-sm text-red-500 block text-center";
                 } else {
-                    document.getElementById('form-container').classList.add('hidden');
+                    document.getElementById('form-container').style.display = 'none';
                     msg.innerText = "You're on the list! See you at sunrise. 🌅";
-                    msg.className = "mt-4 text-sm text-[#26CCC2] block text-xl font-semibold";
+                    msg.className = "mt-4 text-sm text-[#26CCC2] block text-xl font-semibold text-center";
                 }
             } catch (err) {
-                msg.innerText = "Connection failed.";
-                msg.className = "mt-4 text-sm text-red-500 block";
+                msg.innerText = "Check your connection.";
+                msg.className = "mt-4 text-sm text-red-500 block text-center";
             } finally {
                 btn.innerText = "Notify Me";
                 btn.disabled = false;
             }
         }
-
-        // 3
+    </script>
+</body>
+</html>
