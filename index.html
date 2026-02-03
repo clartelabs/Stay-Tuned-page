@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | Your Brand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        html, body {
+            width: 100%;
+            overflow-x: hidden; /* prevent horizontal scrolling while allowing vertical scroll */
+        }
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: #FFFBF5; /* Warm Shell */
+            color: #2D2926; /* Deep Driftwood */
+        }
+        h1 { font-family: 'Outfit', sans-serif; }
+        
+        /* Subtle Beach Wave Animation */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 15vh;
+            background: url('https://curtislarson.github.io/paper.css/static/wave.svg');
+            background-size: 1000px 100px;
+            opacity: 0.05;
+            animation: move_wave 20s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes move_wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+
+    <div class="wave"></div>
+    <div class="absolute top-[-10%] right-[-10%] w-96 h-96 bg-[#26CCC2] opacity-[0.03] blur-[100px] rounded-full"></div>
+    <div class="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-[#FF6F61] opacity-[0.03] blur-[100px] rounded-full"></div>
+
+    <main class="z-10 flex flex-col items-center text-center max-w-2xl">
+        
+        <div class="mb-12 transition-transform duration-700 hover:scale-105">
+            <img src="Black and White Minimalist Elegant Modern Typography  Creative Studio Brand Logo (1).png" alt="Logo" class="w-40 md:w-64 lg:w-80 max-w-full h-auto grayscale contrast-125">
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight mb-6 leading-tight">
+            The future of data, <br/>
+            <span class="text-[#26CCC2]">coming to shore.</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-zinc-500 mb-10 max-w-md font-light">
+            We’re building a cozy, AI-native workspace for your dashboards. Stay tuned for the tide to turn.
+        </p>
+
+        <div id="form-container" class="w-full max-w-md bg-white/50 backdrop-blur-xl border border-white/20 p-2 rounded-[32px] shadow-xl flex items-center group transition-all">
+            <input 
+                id="email-input"
+                type="email" 
+                required 
+                placeholder="Enter your email" 
+                class="flex-grow bg-transparent px-6 py-3 outline-none text-zinc-700"
+            />
+            <button 
+                onclick="submitToWaitlist()"
+                id="submit-btn"
+                class="bg-[#26CCC2] hover:bg-[#1eb3aa] text-white px-8 py-3 rounded-[24px] font-semibold transition-all active:scale-95"
+            >
+                Notify Me
+            </button>
+        </div>
+        <p id="msg" class="mt-4 text-sm font-medium hidden"></p>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            // 1. YOUR CREDENTIALS (Find these in Supabase > Settings > API)
+            const SUPABASE_URL = 'https://supabase.com/dashboard/project/nwpexmcezsducjfylypk';
+            const SUPABASE_ANON_KEY = 'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cGV4bWNlenNkdWNqZnlseXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODU2OTIsImV4cCI6MjA4NTY2MTY5Mn0.hZfkSgSN0-jO2RyD7nuAvK36chMASnKfC4asiFy0QTwey';
+
+            const supabase = libSupabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            async function submitToWaitlist() {
+                const emailInput = document.getElementById('email-input');
+                const btn = document.getElementById('submit-btn');
+                const msg = document.getElementById('msg');
+                const email = emailInput.value;
+
+                if (!email) return;
+
+                // UI Loading State
+                btn.innerText = "Joining...";
+                btn.disabled = true;
+
+                const { error } = await supabase
+                    .from('waitlist')
+                    .insert([{ email: email }]);
+
+                if (error) {
+                    msg.innerText = error.code === '23505' ? "You're already on the list! 🌊" : "Oops, try again.";
+                    msg.className = "mt-4 text-sm text-red-500 block";
+                } else {
+                    document.getElementById('form-container').classList.add('hidden');
+                    msg.innerText = "You're on the list! See you at sunrise. 🌅";
+                    msg.className = "mt-4 text-sm text-[#26CCC2] block text-xl font-semibold";
+                }
+                
+                btn.innerText = "Notify Me";
+                btn.disabled = false;
+            }
+        </script>
+
+        <div class="mt-16 flex items-center gap-8 text-zinc-400 text-sm tracking-widest uppercase">
+            <span class="hover:text-[#FF6F61] cursor-pointer transition-colors italic">Coming 2026</span>
+            <span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
+            <span class="hover:text-[#26CCC2] cursor-pointer transition-colors">Instagram</span>
+            <span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
+            <span class="hover:text-[#26CCC2] cursor-pointer transition-colors">X</span>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const main = document.querySelector('main');
+            main.style.opacity = '0';
+            main.style.transform = 'translateY(20px)';
+            main.style.transition = 'all 1s ease-out';
+            
+            setTimeout(() => {
+                main.style.opacity = '1';
+                main.style.transform = 'translateY(0)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
