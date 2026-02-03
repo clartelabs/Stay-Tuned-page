@@ -81,42 +81,56 @@
 
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <script>
-            // 1. YOUR CREDENTIALS (Find these in Supabase > Settings > API)
-            const SUPABASE_URL = 'https://supabase.com/dashboard/project/nwpexmcezsducjfylypk';
-            const SUPABASE_ANON_KEY = 'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cGV4bWNlenNkdWNqZnlseXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODU2OTIsImV4cCI6MjA4NTY2MTY5Mn0.hZfkSgSN0-jO2RyD7nuAvK36chMASnKfC4asiFy0QTwey';
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-            const supabase = libSupabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<script>
+    // 1. FIXED CREDENTIALS
+    // Note: Use the API URL, not the Dashboard URL
+    const SUPABASE_URL = 'https://nwpaxmcezducjfylypk.supabase.co'; 
+    const SUPABASE_ANON_KEY = 'YOUR_ACTUAL_ANON_KEY'; // Double check this in Settings > API
 
-            async function submitToWaitlist() {
-                const emailInput = document.getElementById('email-input');
-                const btn = document.getElementById('submit-btn');
-                const msg = document.getElementById('msg');
-                const email = emailInput.value;
+    // 2. FIXED INITIALIZATION
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-                if (!email) return;
+    async function submitToWaitlist() {
+        const emailInput = document.getElementById('email-input');
+        const btn = document.getElementById('submit-btn');
+        const msg = document.getElementById('msg');
+        const email = emailInput.value;
 
-                // UI Loading State
-                btn.innerText = "Joining...";
-                btn.disabled = true;
+        if (!email) {
+            alert("Please enter an email");
+            return;
+        }
 
-                const { error } = await supabase
-                    .from('waitlist')
-                    .insert([{ email: email }]);
+        // UI Loading State
+        btn.innerText = "Joining...";
+        btn.disabled = true;
 
-                if (error) {
-                    msg.innerText = error.code === '23505' ? "You're already on the list! 🌊" : "Oops, try again.";
-                    msg.className = "mt-4 text-sm text-red-500 block";
-                } else {
-                    document.getElementById('form-container').classList.add('hidden');
-                    msg.innerText = "You're on the list! See you at sunrise. 🌅";
-                    msg.className = "mt-4 text-sm text-[#26CCC2] block text-xl font-semibold";
-                }
-                
-                btn.innerText = "Notify Me";
-                btn.disabled = false;
+        try {
+            const { error } = await supabaseClient
+                .from('waitlist')
+                .insert([{ email: email }]);
+
+            if (error) {
+                console.error("Supabase Error:", error);
+                msg.innerText = error.code === '23505' ? "You're already on the list! 🌊" : "Oops, try again.";
+                msg.className = "mt-4 text-sm text-red-500 block";
+            } else {
+                document.getElementById('form-container').classList.add('hidden');
+                msg.innerText = "You're on the list! See you at sunrise. 🌅";
+                msg.className = "mt-4 text-sm text-[#26CCC2] block text-xl font-semibold";
             }
-        </script>
+        } catch (err) {
+            console.error("System Error:", err);
+            msg.innerText = "Connection failed. Check your internet.";
+            msg.className = "mt-4 text-sm text-red-500 block";
+        } finally {
+            btn.innerText = "Notify Me";
+            btn.disabled = false;
+        }
+    }
+</script>
 
         <div class="mt-16 flex items-center gap-8 text-zinc-400 text-sm tracking-widest uppercase">
             <span class="hover:text-[#FF6F61] cursor-pointer transition-colors italic">Coming 2026</span>
