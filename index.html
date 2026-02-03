@@ -8,13 +8,13 @@
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <style>
-    /* Prevent any horizontal shifting on mobile */
+   <style>
+    /* 1. Universal "No-Overflow" Guard */
     html, body {
         width: 100%;
         margin: 0;
         padding: 0;
-        overflow-x: hidden; 
+        overflow-x: hidden; /* This stops the 'sliding left' issue */
         position: relative;
     }
     
@@ -24,36 +24,83 @@
         color: #2D2926;
     }
     
-    h1 { font-family: 'Outfit', sans-serif; }
-    
-    /* Fixed Wave: Stays at the bottom without pushing the page left/right */
+    /* 2. Responsive Wave */
     .wave {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 12vh;
+        height: 10vh;
         background: url('https://curtislarson.github.io/paper.css/static/wave.svg');
         background-size: 1000px 100px;
         opacity: 0.05;
         animation: move_wave 20s linear infinite;
         pointer-events: none;
-        z-index: 0;
     }
-    
+
+    /* 3. Background Blurs (Fixed to stay behind content) */
+    .blur-circle {
+        position: fixed;
+        z-index: -1;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
     @keyframes move_wave {
         0% { background-position-x: 0; }
         100% { background-position-x: 1000px; }
     }
-
-    /* Prevent text from hitting the screen edges on tiny phones */
-    main {
-        width: 100%;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
 </style>
 
+<body class="flex flex-col items-center justify-center min-h-screen">
+    <div class="wave"></div>
+    
+    <div class="blur-circle top-[-5%] right-[-5%] w-64 h-64 bg-[#26CCC2] opacity-[0.05] blur-[60px]"></div>
+    <div class="blur-circle bottom-[-5%] left-[-5%] w-64 h-64 bg-[#FF6F61] opacity-[0.05] blur-[60px]"></div>
+
+    <main class="z-10 flex flex-col items-center text-center w-full max-w-2xl px-5 py-10">
+        
+        <div class="mb-8 md:mb-12">
+            <img src="Black and White Minimalist Elegant Modern Typography  Creative Studio Brand Logo (1).png" 
+                 alt="Clartèlabs" 
+                 class="w-32 md:w-52 lg:w-64 h-auto grayscale contrast-125">
+        </div>
+
+        <h1 class="text-3xl md:text-6xl font-semibold tracking-tight mb-4 leading-tight px-2">
+            The future of data, <br/>
+            <span class="text-[#26CCC2]">coming to shore.</span>
+        </h1>
+
+        <p class="text-base md:text-xl text-zinc-500 mb-8 md:mb-10 max-w-sm mx-auto font-light">
+            We’re building a cozy, AI-native workspace for your dashboards.
+        </p>
+
+        <div id="form-container" class="w-full max-w-[400px] bg-white/70 backdrop-blur-xl border border-white/40 p-1.5 rounded-[28px] shadow-lg flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <input 
+                id="email-input"
+                type="email" 
+                required 
+                placeholder="Enter your email" 
+                class="flex-grow bg-transparent px-5 py-3 outline-none text-zinc-700 text-base min-w-0"
+            />
+            <button 
+                onclick="submitToWaitlist()"
+                id="submit-btn"
+                class="bg-[#26CCC2] hover:bg-[#1eb3aa] text-white px-6 py-3 rounded-[22px] font-semibold transition-all active:scale-95 whitespace-nowrap"
+            >
+                Notify Me
+            </button>
+        </div>
+        <p id="msg" class="mt-4 text-sm font-medium hidden"></p>
+
+        <div class="mt-12 md:mt-16 flex flex-wrap justify-center items-center gap-4 md:gap-8 text-zinc-400 text-[10px] md:text-sm tracking-widest uppercase">
+            <span>Coming 2026</span>
+            <span class="w-1 h-1 bg-zinc-300 rounded-full hidden sm:block"></span>
+            <a href="https://www.instagram.com/clartelabs/" class="hover:text-[#26CCC2] transition-colors">Instagram</a>
+            <span class="w-1 h-1 bg-zinc-300 rounded-full hidden sm:block"></span>
+            <a href="#" class="hover:text-[#26CCC2] transition-colors">X</a>
+        </div>
+    </main>
 <body class="flex flex-col items-center justify-center min-h-screen">
     <div class="wave"></div>
     <div class="fixed top-[-5%] right-[-5%] w-64 h-64 md:w-96 md:h-96 bg-[#26CCC2] opacity-[0.04] blur-[80px] rounded-full pointer-events-none"></div>
